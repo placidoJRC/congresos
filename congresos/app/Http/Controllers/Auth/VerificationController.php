@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\VerifiesEmails;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Http\Request;
 
 class VerificationController extends Controller
 {
@@ -33,10 +36,23 @@ class VerificationController extends Controller
      *
      * @return void
      */
+     
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
+        //esta se debe eliminar
+        //ya que restringe el acceso a usuarios autentificados
+        $this->middleware('auth', ['except' => ['verify']]); //se puede optar por este
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
+    }
+    
+    public function verify(Request $request)
+    {
+        $user = \App\User::find($request->route('id'));
+        if ($user->markEmailAsVerified()) {
+            event(new Verified($user));
+        }
+        return redirect($this->redirectPath());
     }
 }

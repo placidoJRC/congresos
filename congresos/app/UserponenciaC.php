@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class userponencia extends Model
+class UserponenciaC extends Model
 {
      use SoftDeletes; 
 
@@ -17,9 +17,9 @@ class userponencia extends Model
      
     
            public function ponencia() {
-        return $this->belongsTo('App\ponencia', 'idponencia');
+        return $this->belongsTo('App\Ponencia', 'idponencia');
     }
-             public function post() {
-        return $this->belongsTo('App\user', 'iduser');
+             public function user() {
+        return $this->belongsTo('App\User', 'iduser');
     }
 }

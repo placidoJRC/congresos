@@ -20,9 +20,9 @@ class CreatePonenciasTable extends Migration
 
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->bigInteger('iduser');
-            $table->text('titulo');
-            $table->text('video');
+            $table->bigInteger('iduser')->unsigned();
+            $table->text('titulo',120);
+            $table->text('video',120);
             $table->softDeletes();
             
             $table->foreign('iduser')->references('id')->on('users');

@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\PonenciaC;
+use App\PagoC;
 
 use Illuminate\Http\Request;
-
+use App\User;
 class ponencia extends Controller
 {
     /**
@@ -13,7 +15,11 @@ class ponencia extends Controller
      */
     public function index()
     {
-        //
+        $ponencias= PonenciaC::all();
+        $pagos= PagoC::all();
+
+       return view('verponencias')->with(['ponencias'=>$ponencias,'pagos'=>$pagos]);
+
     }
 
     /**
@@ -23,7 +29,8 @@ class ponencia extends Controller
      */
     public function create()
     {
-        //
+        $usuarios= User::all();
+        return view('crearponencia')->with(['usuarios'=>$usuarios]);
     }
 
     /**
@@ -34,7 +41,21 @@ class ponencia extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $this->validate( $request, [
+            "iduser"=>"required",
+            "titulo"=>"required",
+            "video"=>"required"
+        ]);
+        
+        $ponencia = new PonenciaC([
+            "iduser" => $request->get("iduser"),
+            "titulo" => $request->get("titulo"),
+            "video" => $request->get("video")
+        ]);
+        
+        $ponencia->save();
+        
+        return view('index');
     }
 
     /**
@@ -45,7 +66,10 @@ class ponencia extends Controller
      */
     public function show($id)
     {
-        //
+        $ponencia = PonenciaC::find($id);
+        
+
+        return view('verponencia')->with(['ponencia'=>$ponencia]);
     }
 
     /**

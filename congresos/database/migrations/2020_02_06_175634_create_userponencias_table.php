@@ -20,8 +20,8 @@ class CreateUserponenciasTable extends Migration
 
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->bigInteger('iduser');
-            $table->bigInteger('idponencia');
+            $table->bigInteger('iduser')->unsigned();
+            $table->bigInteger('idponencia')->unsigned();
 
             
             $table->foreign('iduser')->references('id')->on('users');

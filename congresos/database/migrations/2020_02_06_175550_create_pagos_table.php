@@ -20,9 +20,9 @@ class CreatePagosTable extends Migration
 
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->bigInteger('iduser');
-            $table->text('documento');
-            $table->boolean('verificado');
+            $table->bigInteger('iduser')->unsigned();
+            $table->text('documento',120);
+            $table->boolean('verificado')->default(false);
             $table->softDeletes();
             
             $table->foreign('iduser')->references('id')->on('users');

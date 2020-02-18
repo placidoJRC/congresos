@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\PagoC;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class pago extends Controller
@@ -13,7 +14,7 @@ class pago extends Controller
      */
     public function index()
     {
-        //
+        return view('crearpago');
     }
 
     /**
@@ -34,7 +35,21 @@ class pago extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $name="";
+        if($request->hasFile('imagen') && $request->file('imagen')->isValid()) {
+        $file = $request->file('imagen');
+        $target = '../public/assets/img';
+        $name = $file->getClientOriginalName();
+        $file->move($target, $name);
+        }
+         $valores = array (
+                        "verificado" => 0,
+                        "iduser"=>Auth::user()->id,
+                        "documento"=>$name,
+                    );
+        $pago= new PagoC($valores);//momento magico
+        $pago->save();
+        return view("index");
     }
 
     /**
@@ -45,7 +60,7 @@ class pago extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -81,4 +96,5 @@ class pago extends Controller
     {
         //
     }
+    
 }

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\UserponenciaC;
+use Illuminate\Support\Facades\Auth;
 class userponencia extends Controller
 {
     /**
@@ -34,7 +35,19 @@ class userponencia extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate( $request, [
+            "idponencia"=>"required"
+        ]);
+        
+        $userponencia = new UserponenciaC([
+            
+            "iduser" => Auth::id(),
+            "idponencia" => $request->get("idponencia")
+        ]);
+        
+        $userponencia->save();
+        
+        return  response()->download(public_path('assets/justificante/justificante.pdf'));
     }
 
     /**
